@@ -1,0 +1,20 @@
+# Android Multi-Device Mounter
+# 2015 eosrei.net
+
+# Run with `sh mntusb` since sdcard is mounted noexec. Requires root.
+# Block devices appear in /dev/block/ when connected.
+# This mounts all found block devices into /sdcard/mnt/
+
+MOUNT_DIR=/sdcard/mnt
+
+USB_BLOCK_DEVICES="/dev/block/sd??"
+for DEVICE_PATH in $USB_BLOCK_DEVICES; do
+	DEVICE=`basename $DEVICE_PATH`
+	DEVICE_MOUNT=$MOUNT_DIR/$DEVICE
+
+	echo "Found $DEVICE at $DEVICE_PATH to mount at $DEVICE_MOUNT"
+	mkdir -p $DEVICE_MOUNT
+	mount -t vfat $DEVICE_PATH $DEVICE_MOUNT
+done
+
+
